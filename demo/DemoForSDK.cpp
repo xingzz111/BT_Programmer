@@ -1,6 +1,6 @@
 // CommandApp.cpp : Defines the entry point for the console application.
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "resource.h"
 #include <shlwapi.h>
 #ifdef _MSC_VER
@@ -10,10 +10,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 /* import sdk library */
-#include ".\lib\Controller.h"
+#include "lib/Controller.h"
 
 #define SCRIPT_IMPL
-#include ".\lib\ScriptEx.h"
+#include "lib/ScriptEx.h"
 
 CProduction*	g_pProduction	= NULL;
 BOOL			g_bIsUpgrading	= FALSE;

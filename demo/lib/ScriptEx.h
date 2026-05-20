@@ -1,7 +1,7 @@
 #ifndef __SCRIPT_LIB_H__
 #define __SCRIPT_LIB_H__
 #pragma once
-#include <Windows.h>
+#include <windows.h>
 #include <tchar.h>
 //////////////////////////////////////////////////////////////////////////
 

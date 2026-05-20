@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-mingw:
-    name: Cross-compile with MinGW-w64 on Ubuntu
+    name: Cross-compile DemoSDK_C with MinGW-w64
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -21,28 +21,18 @@ jobs:
       - name: Configure CMake
         run: |
           cmake -B build \
-            -DCMAKE_TOOLCHAIN_FILE=i686-w64-mingw32.cmake \
-            -DCMAKE_VERBOSE_MAKEFILE=ON
+            -DCMAKE_TOOLCHAIN_FILE=i686-w64-mingw32.cmake
 
-      - name: Build
-        run: cmake --build build -- -j$(nproc)
+      - name: Build DemoSDK_C
+        run: cmake --build build --target DemoSDK_C -- -j$(nproc)
 
       - name: List build outputs
-        if: always()
         run: |
           echo "=== Build outputs ==="
-          find build -name "*.exe" -exec ls -lh {} \; 2>/dev/null || true
-
-      - name: Upload DemoSDK
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: DemoSDK-Win32
-          path: build/DemoSDK.exe
+          ls -lh build/DemoSDK_C.exe
 
       - name: Upload DemoSDK_C
         uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: DemoSDK_C-Win32
           path: build/DemoSDK_C.exe
