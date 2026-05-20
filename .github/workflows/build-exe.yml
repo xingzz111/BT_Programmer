@@ -1,0 +1,60 @@
+name: Build Win32 EXE
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    name: Build DemoSDK & DemoSDK_C (Win32)
+    runs-on: windows-2019
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
+
+      - name: Configure CMake
+        run: cmake -B build -A Win32
+
+      - name: Build Release
+        run: cmake --build build --config Release
+
+      - name: Build Debug
+        run: cmake --build build --config Debug
+
+      - name: List build outputs
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse build/*.exe | ForEach-Object {
+            Write-Host "$($_.FullName)  $([int]($_.Length/1024)) KB"
+          }
+
+      - name: Upload DemoSDK Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: DemoSDK-Release
+          path: build/Release/DemoSDK.exe
+
+      - name: Upload DemoSDK Debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: DemoSDK-Debug
+          path: build/Debug/DemoSDK.exe
+
+      - name: Upload DemoSDK_C Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: DemoSDK_C-Release
+          path: build/Release/DemoSDK_C.exe
+
+      - name: Upload DemoSDK_C Debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: DemoSDK_C-Debug
+          path: build/Debug/DemoSDK_C.exe

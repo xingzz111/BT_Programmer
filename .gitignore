@@ -1,0 +1,19 @@
+# Build output
+build/
+*.obj
+*.pdb
+*.ilk
+*.exp
+
+# macOS
+.DS_Store
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+*.ncb
+*.sdf
+*.opensdf
+ipch/
