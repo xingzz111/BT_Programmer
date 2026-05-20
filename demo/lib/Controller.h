@@ -211,25 +211,25 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////
-//加载库
+//?????
 #ifndef CONTROLLER_IMPL
 #pragma message("----------------------------------------------------------------------------------------------")
 
 #ifdef _DEBUG
 #   ifdef _UNICODE
 #       pragma comment(lib, "ControllerD.lib")
-#		pragma message("动态连接库 <ControllerD.lib> 连接的 <Controller.dll> 被连接")	
+#		pragma message("???????? <ControllerD.lib> ????? <Controller.dll> ??????")	
 #   else
 #       pragma comment(lib, "ControllerD.lib")
-#		pragma message("动态连接库 <ControllerD.lib> 连接的 <Controller.dll> 被连接")	
+#		pragma message("???????? <ControllerD.lib> ????? <Controller.dll> ??????")	
 #   endif
 #else
 #   ifdef _UNICODE
 #       pragma comment(lib, "Controller.lib")
-#		pragma message("动态连接库 <Controller.lib> 连接的 <Controller.dll> 被连接")	
+#		pragma message("???????? <Controller.lib> ????? <Controller.dll> ??????")	
 #   else
 #       pragma comment(lib, "Controller.lib")
-#		pragma message("动态连接库 <Controller.lib> 连接的 <Controller.dll> 被连接")	
+#		pragma message("???????? <Controller.lib> ????? <Controller.dll> ??????")	
 #   endif
 #endif
 

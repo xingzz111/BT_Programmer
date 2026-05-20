@@ -2,9 +2,11 @@
 //
 #include "StdAfx.h"
 #include "resource.h"
-#include <Shlwapi.h>
+#include <shlwapi.h>
+#ifdef _MSC_VER
 #pragma comment(lib, "shlwapi.lib")
 #pragma warning(disable:4996)
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 /* import sdk library */
