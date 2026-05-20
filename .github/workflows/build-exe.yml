@@ -6,55 +6,50 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-windows:
-    name: Build DemoSDK & DemoSDK_C (Win32)
-    runs-on: windows-2019
+  build-mingw:
+    name: Build with MinGW on Ubuntu (Free runner)
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup MSVC Developer Command Prompt
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x86
+      - name: Install MinGW cross-compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 gendef
+          sudo update-alternatives --set i686-w64-mingw32-gcc /usr/bin/i686-w64-mingw32-gcc-posix
+          sudo update-alternatives --set i686-w64-mingw32-g++ /usr/bin/i686-w64-mingw32-g++-posix
 
       - name: Configure CMake
-        run: cmake -B build -A Win32
+        run: |
+          cmake -B build \
+            -DCMAKE_SYSTEM_NAME=Windows \
+            -DCMAKE_SYSTEM_PROCESSOR=x86 \
+            -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc \
+            -DCMAKE_CXX_COMPILER=i686-w64-mingw32-g++ \
+            -DCMAKE_RC_COMPILER=i686-w64-mingw32-windres
 
       - name: Build Release
         run: cmake --build build --config Release
 
-      - name: Build Debug
-        run: cmake --build build --config Debug
-
-      - name: List build outputs
-        shell: pwsh
+      - name: Verify EXE files
         run: |
-          Get-ChildItem -Recurse build/*.exe | ForEach-Object {
-            Write-Host "$($_.FullName)  $([int]($_.Length/1024)) KB"
-          }
+          echo "=== Build outputs ==="
+          find build -name "*.exe" -exec ls -lh {} \;
+          echo "=== File verification ==="
+          for f in $(find build -name "*.exe"); do
+            file "$f"
+          done
 
-      - name: Upload DemoSDK Release
+      - name: Upload DemoSDK
         uses: actions/upload-artifact@v4
         with:
-          name: DemoSDK-Release
-          path: build/Release/DemoSDK.exe
+          name: DemoSDK-MinGW
+          path: build/DemoSDK.exe
 
-      - name: Upload DemoSDK Debug
+      - name: Upload DemoSDK_C
         uses: actions/upload-artifact@v4
         with:
-          name: DemoSDK-Debug
-          path: build/Debug/DemoSDK.exe
-
-      - name: Upload DemoSDK_C Release
-        uses: actions/upload-artifact@v4
-        with:
-          name: DemoSDK_C-Release
-          path: build/Release/DemoSDK_C.exe
-
-      - name: Upload DemoSDK_C Debug
-        uses: actions/upload-artifact@v4
-        with:
-          name: DemoSDK_C-Debug
-          path: build/Debug/DemoSDK_C.exe
+          name: DemoSDK_C-MinGW
+          path: build/DemoSDK_C.exe
