@@ -1,0 +1,13 @@
+LIBRARY Controller.dll
+EXPORTS
+    ??0CProduction@@QAE@ABV0@@Z
+    ??0CProduction@@QAE@XZ
+    ??1CProduction@@UAE@XZ
+    ??4CProduction@@QAEAAV0@ABV0@@Z
+    ??_7CProduction@@6B@
+    ?Download@CProduction@@QAEHXZ
+    ?GetFirmwareConfig@CProduction@@QAEPBGPBG@Z
+    ?Initialize@CProduction@@QAEHIP6AHHKIJ@Z@Z
+    ?RefreshDevice@CProduction@@QAEXI@Z
+    ?SetConfiguration@CProduction@@QAEXPBG0H@Z
+    ?SetFirmwareFile@CProduction@@QAEHPBGPAUDS_FIRMWARE_INFO@@@Z

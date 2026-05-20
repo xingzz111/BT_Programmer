@@ -24,19 +24,16 @@ target_compile_definitions(DemoSDK PRIVATE
 )
 
 if(MINGW)
-    # MinGW: generate import lib from Controller.dll using gendef + dlltool
+    # MinGW: generate import lib from Controller.dll
     set(CONTROLLER_DLL "${CMAKE_SOURCE_DIR}/demo/lib/Controller.dll")
-    set(CONTROLLER_DEF "${CMAKE_BINARY_DIR}/Controller.def")
+    set(CONTROLLER_DEF "${CMAKE_SOURCE_DIR}/demo/lib/Controller.def")
     set(CONTROLLER_IMPLIB "${CMAKE_BINARY_DIR}/libController.a")
 
     add_custom_command(
         OUTPUT ${CONTROLLER_IMPLIB}
-        COMMAND gendef ${CONTROLLER_DLL}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_BINARY_DIR}/Controller.def" ${CONTROLLER_DEF}
-        COMMAND dlltool -d ${CONTROLLER_DEF} -l ${CONTROLLER_IMPLIB}
-        DEPENDS ${CONTROLLER_DLL}
-        COMMENT "Generating MinGW import library from Controller.dll"
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMAND ${CMAKE_DLLTOOL} --input-def ${CONTROLLER_DEF} --output-lib ${CONTROLLER_IMPLIB}
+        DEPENDS ${CONTROLLER_DEF} ${CONTROLLER_DLL}
+        COMMENT "Generating MinGW import library from Controller.def"
     )
 
     add_custom_target(gen_controller_lib DEPENDS ${CONTROLLER_IMPLIB})
