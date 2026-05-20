@@ -31,12 +31,11 @@ if(MINGW)
 
     add_custom_command(
         OUTPUT ${CONTROLLER_IMPLIB}
-        COMMAND ${CMAKE_COMMAND} -E echo "Generating MinGW import lib from Controller.dll ..."
-        COMMAND gendef ${CONTROLLER_DLL} -a > /dev/null 2>&1 || gendef ${CONTROLLER_DLL}
+        COMMAND gendef ${CONTROLLER_DLL}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_BINARY_DIR}/Controller.def" ${CONTROLLER_DEF}
         COMMAND dlltool -d ${CONTROLLER_DEF} -l ${CONTROLLER_IMPLIB}
         DEPENDS ${CONTROLLER_DLL}
-        COMMENT "Generating MinGW import library for Controller.dll"
+        COMMENT "Generating MinGW import library from Controller.dll"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 

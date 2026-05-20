@@ -1,4 +1,4 @@
-name: Build Win32 EXE
+name: Build Win32 EXE (MinGW Cross-Compile)
 
 on:
   push:
@@ -7,49 +7,41 @@ on:
 
 jobs:
   build-mingw:
-    name: Build with MinGW on Ubuntu (Free runner)
+    name: Cross-compile with MinGW-w64 on Ubuntu
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install MinGW cross-compiler
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mingw-w64 gendef
-          sudo update-alternatives --set i686-w64-mingw32-gcc /usr/bin/i686-w64-mingw32-gcc-posix
-          sudo update-alternatives --set i686-w64-mingw32-g++ /usr/bin/i686-w64-mingw32-g++-posix
+      - name: Install MinGW-w64
+        run: sudo apt-get update && sudo apt-get install -y mingw-w64 gendef
 
       - name: Configure CMake
         run: |
           cmake -B build \
             -DCMAKE_SYSTEM_NAME=Windows \
-            -DCMAKE_SYSTEM_PROCESSOR=x86 \
             -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc \
             -DCMAKE_CXX_COMPILER=i686-w64-mingw32-g++ \
-            -DCMAKE_RC_COMPILER=i686-w64-mingw32-windres
+            -DCMAKE_RC_COMPILER=i686-w64-mingw32-windres \
+            -DCMAKE_FIND_ROOT_PATH=/usr/i686-w64-mingw32
 
-      - name: Build Release
+      - name: Build
         run: cmake --build build --config Release
 
-      - name: Verify EXE files
+      - name: List build outputs
         run: |
           echo "=== Build outputs ==="
           find build -name "*.exe" -exec ls -lh {} \;
-          echo "=== File verification ==="
-          for f in $(find build -name "*.exe"); do
-            file "$f"
-          done
 
       - name: Upload DemoSDK
         uses: actions/upload-artifact@v4
         with:
-          name: DemoSDK-MinGW
+          name: DemoSDK-Win32
           path: build/DemoSDK.exe
 
       - name: Upload DemoSDK_C
         uses: actions/upload-artifact@v4
         with:
-          name: DemoSDK_C-MinGW
+          name: DemoSDK_C-Win32
           path: build/DemoSDK_C.exe
