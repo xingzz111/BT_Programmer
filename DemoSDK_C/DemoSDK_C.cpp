@@ -13,6 +13,7 @@ typedef int (*PFN_PRODUCTIONCB)(int nType, DWORD dwDeviceId, WPARAM wParam, LPAR
 
 int		PRODUCTION_NOTIFY(int nType, DWORD dwDeviceId, WPARAM wParam, LPARAM lParam);
 void	WriteLog(LPCTSTR lpszFormat, ...);
+const char* Wide2Ansi(LPCWSTR lpsz, char* szVal);
 
 /// Firmware file information
 struct DS_FIRMWARE_INFO{

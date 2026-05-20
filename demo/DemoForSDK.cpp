@@ -35,6 +35,7 @@ unsigned char	g_pParmGet[MAX_USR_PARM];
 
 int		PRODUCTION_NOTIFY(int nType, DWORD dwDeviceId, WPARAM wParam, LPARAM lParam);
 void	WriteLog(LPCTSTR lpszFormat, ...);
+const char* Wide2Ansi(LPCWSTR lpsz, char* szVal);
 //////////////////////////////////////////////////////////////////////////
 
 HWND				g_hMsgWnd = NULL;
